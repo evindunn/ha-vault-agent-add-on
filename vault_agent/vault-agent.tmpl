@@ -1,0 +1,39 @@
+pid_file = "/data/vault-agent.pid"
+
+vault {
+  address = "%s"
+  tls_skip_verify = %s
+}
+
+auto_auth {
+  method {
+    type = "token_file"
+
+    config = {
+      token_file_path = "%s"
+    }
+  }
+}
+
+cache {
+    # Empty cache block still enables caching
+}
+
+template {
+  contents = <<-EOF
+  {{ with secret "pki/issue/%s" "common_name=%s" -}}
+  {{ .Data.certificate }}
+  {{ .Data.issuing_ca -}}
+  {{ end -}}
+  EOF
+  destination = "/ssl/fullchain.pem"
+}
+
+template {
+  contents = <<-EOF
+  {{ with secret "pki/issue/%s" "common_name=%s" -}}
+  {{ .Data.private_key -}}
+  {{ end -}}
+  EOF
+  destination = "/ssl/privkey.pem"
+}
