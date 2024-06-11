@@ -7,10 +7,10 @@ vault {
 
 auto_auth {
   method {
-    type = "token_file"
+    type = "approle"
 
     config = {
-      token_file_path = "%s"
+      role_id_file_path = "%s"
     }
   }
 }

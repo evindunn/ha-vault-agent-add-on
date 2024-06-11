@@ -1,14 +1,15 @@
 # Vault Agent for Home Assistant
 
-This add-on requires a working vault server with
-[token auth](https://developer.hashicorp.com/vault/docs/auth/token) and the
+This add-on requires a working vault server with a working
+[approle](https://developer.hashicorp.com/vault/docs/auth/approle) and the
 [pki secrets engine](https://developer.hashicorp.com/vault/docs/secrets/pki)
-enabled.
+enabled. The approle must be configured with `bind_secret_id=false` 
+(and it would be smart to use `secret_id_bound_cidrs`).
 
 The add-on then takes the following configuration
 ```
 vault_server: str
-vault_token: str
+vault_auth_role_id: str
 vault_pki_role: str
 vault_pki_common_name: str
 vault_tls_skip_verify: bool
